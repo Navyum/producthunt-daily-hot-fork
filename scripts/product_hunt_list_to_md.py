@@ -174,16 +174,16 @@ def fetch_product_hunt_data():
     return [Product(**post) for post in sorted(all_posts, key=lambda x: x['votesCount'], reverse=True)[:30]]
 
 def generate_markdown(products, date_str):
-    """生成Markdown内容并保存到data目录"""
+    """生成Markdown内容并保存到docs目录"""
     markdown_content = f"# PH今日热榜 | {date_str}\n\n"
     for rank, product in enumerate(products, 1):
         markdown_content += product.to_markdown(rank)
 
-    # 确保 data 目录存在
-    os.makedirs('data', exist_ok=True)
+    # 确保 docs 目录存在
+    os.makedirs('docs', exist_ok=True)
 
-    # 修改文件保存路径到 data 目录
-    file_name = f"data/PH-daily-{date_str}.md"
+    # 修改文件保存路径到 docs 目录
+    file_name = f"docs/PH-daily-{date_str}.md"
     
     # 如果文件存在，直接覆盖
     with open(file_name, 'w', encoding='utf-8') as file:
