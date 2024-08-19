@@ -124,6 +124,7 @@ def get_producthunt_token():
 def fetch_product_hunt_data():
     """从Product Hunt获取前一天的Top 30数据"""
     token = get_producthunt_token()
+    print("token:-----> " + token)
     yesterday = datetime.now(timezone.utc) - timedelta(days=1)
     date_str = yesterday.strftime('%Y-%m-%d')
     url = "https://api.producthunt.com/v2/api/graphql"
