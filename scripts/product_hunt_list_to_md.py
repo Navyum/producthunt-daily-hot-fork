@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import pytz
 
 # 创建 OpenAI 客户端实例
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+# client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 producthunt_client_id = os.getenv('PRODUCTHUNT_CLIENT_ID')
 producthunt_client_secret = os.getenv('PRODUCTHUNT_CLIENT_SECRET')
@@ -22,9 +22,9 @@ class Product:
         self.website = website
         self.url = url
         self.og_image_url = self.fetch_og_image_url()
-        self.keyword = self.generate_keywords()
-        self.translated_tagline = self.translate_text(self.tagline)
-        self.translated_description = self.translate_text(self.description)
+        #self.keyword = self.generate_keywords()
+        self.translated_tagline = self.tagline
+        self.translated_description = self.description
 
     def fetch_og_image_url(self) -> str:
         """获取产品的Open Graph图片URL"""
@@ -196,7 +196,7 @@ def main():
 
     # 获取Product Hunt数据
     products = fetch_product_hunt_data()
-
+    print(products)
     # 生成Markdown文件
     generate_markdown(products, date_str)
 
