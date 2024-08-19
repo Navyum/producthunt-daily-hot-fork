@@ -22,7 +22,7 @@ class Product:
         self.website = website
         self.url = url
         self.og_image_url = self.fetch_og_image_url()
-        #self.keyword = self.generate_keywords()
+        self.keyword = "" # self.generate_keywords()
         self.translated_tagline = self.tagline
         self.translated_description = self.description
 
