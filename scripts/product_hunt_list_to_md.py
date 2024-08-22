@@ -4,12 +4,19 @@ from datetime import datetime, timedelta, timezone
 from openai import OpenAI
 from bs4 import BeautifulSoup
 import pytz
+from tencentcloud.common import credential
+from tencentcloud.tmt.v20180321 import tmt_client, models
 
 # 创建 OpenAI 客户端实例
 # client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 producthunt_client_id = os.getenv('PRODUCTHUNT_CLIENT_ID')
 producthunt_client_secret = os.getenv('PRODUCTHUNT_CLIENT_SECRET')
+tencent_secret_id = os.getenv('tencent_secret_id')
+tencent_secret_key = os.getenv('tencent_secret_key')
+
+cred = credential.Credential(tencent_secret_id, tencent_secret_key)
+tmt_client = tmt_client.TmtClient(cred, "ap-chengdu")
 
 class Product:
     def __init__(self, id: str, name: str, tagline: str, description: str, votesCount: int, createdAt: str, featuredAt: str, website: str, url: str, **kwargs):
@@ -23,8 +30,8 @@ class Product:
         self.url = url
         self.og_image_url = self.fetch_og_image_url()
         self.keyword = "无关键词"
-        self.translated_tagline = self.tagline
-        self.translated_description = self.description
+        self.translated_tagline = self.translate_text(self.tagline)
+        self.translated_description = self.translate_text(self.description)
 
     def fetch_og_image_url(self) -> str:
         """获取产品的Open Graph图片URL"""
@@ -59,19 +66,17 @@ class Product:
             return "无关键词"
 
     def translate_text(self, text: str) -> str:
-        """使用OpenAI翻译文本内容"""
+        """使用tx翻译文本内容"""
         try:
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "你是世界上最专业的翻译工具，擅长英文和中文互译。你是一位精通英文和中文的专业翻译，尤其擅长将IT公司黑话和专业词汇翻译成简洁易懂的地道表达。你的任务是将以下内容翻译成地道的中文，风格与科普杂志或日常对话相似。"},
-                    {"role": "user", "content": text},
-                ],
-                max_tokens=500,
-                temperature=0.7,
-            )
-            translated_text = response.choices[0].message.content.strip()
-            return translated_text
+            request = models.TextTranslateRequest()
+            request.Source = "auto" ## en
+            request.Target = "zh"
+            request.SourceText = text
+            request.ProjectId = 0
+
+            # 发送请求并获取翻译结果
+            TextTranslateResponse = tmt_client.TextTranslate(request)
+            return TextTranslateResponse.TargetText
         except Exception as e:
             print(f"Error occurred during translation: {e}")
             return text
