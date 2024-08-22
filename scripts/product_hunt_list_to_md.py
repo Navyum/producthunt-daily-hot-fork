@@ -12,8 +12,8 @@ from tencentcloud.tmt.v20180321 import tmt_client, models
 
 producthunt_client_id = os.getenv('PRODUCTHUNT_CLIENT_ID')
 producthunt_client_secret = os.getenv('PRODUCTHUNT_CLIENT_SECRET')
-tencent_secret_id = os.getenv('tencent_secret_id')
-tencent_secret_key = os.getenv('tencent_secret_key')
+tencent_secret_id = os.getenv('TENCENT_SECRET_ID')
+tencent_secret_key = os.getenv('TENCENT_SECRET_KEY')
 
 cred = credential.Credential(tencent_secret_id, tencent_secret_key)
 tmt_client = tmt_client.TmtClient(cred, "ap-chengdu")
