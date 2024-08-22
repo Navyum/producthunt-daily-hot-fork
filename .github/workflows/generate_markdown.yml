@@ -28,6 +28,8 @@ jobs:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         PRODUCTHUNT_CLIENT_ID: ${{ secrets.PRODUCTHUNT_CLIENT_ID }}
         PRODUCTHUNT_CLIENT_SECRET: ${{ secrets.PRODUCTHUNT_CLIENT_SECRET }}
+        tencent_secret_id: ${{ secrets.tencent_secret_id }}
+        tencent_secret_key: ${{ secrets.tencent_secret_key }}
       run: |
         python scripts/product_hunt_list_to_md.py
 
